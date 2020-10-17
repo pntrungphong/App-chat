@@ -27,6 +27,10 @@ export const UserSchema = new Schema(
       minlength: 6,
       maxlength: 1024,
     },
+    image: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
@@ -38,6 +42,7 @@ export const validateUser = (user: any) => {
     name: joi.string().min(5).max(50).required(),
     email: joi.string().min(10).max(100).email().required(),
     password: joi.string().min(6).max(1024).required(),
+    // image:joi.string().required()
   });
   return schema.validate(user);
 };

@@ -66,6 +66,7 @@ var chatroom_1 = __importDefault(require("./routers/chatroom"));
 var config_1 = require("config");
 var cors_1 = __importDefault(require("cors"));
 var jwt = __importStar(require("jsonwebtoken"));
+var body_parser_1 = __importDefault(require("body-parser"));
 var message_1 = require("./models/message");
 var app = express_1.default();
 app.use(cors_1.default());
@@ -76,7 +77,9 @@ mongoose_1.default
     .connect("mongodb://localhost/appchat")
     .then(function () { return console.log("Connected to MongoDB..."); })
     .catch(function () { return console.error("Could not connect to MongoDB..."); });
-app.use(express_1.default.json());
+app.use('/uploads', express_1.default.static('uploads'));
+app.use(body_parser_1.default.urlencoded({ extended: false }));
+app.use(body_parser_1.default.json());
 app.use("/api", user_1.default);
 app.use("/api", chatroom_1.default);
 app.use("/api", file_1.default);

@@ -1,14 +1,20 @@
 import multer from 'multer'
-import util from 'util'
-let storage=multer.diskStorage({
+const storage=multer.diskStorage({
     destination:(req,file,cb)=>{
-        cb(null,'upload')
+        cb(null,'./uploads/')
     },
     filename:(req,file,cb)=>{
-        cb(null, file.fieldname + '-' + Date.now())
+        cb(null, new Date().toISOString() + '-'+ file.originalname)
     }
 })
-let uploadFile=multer({
+const fileFilter=(req:any,file:any,cb:any)=>{
+    if(file.mimetype==='image/jpeg' || file.mimetype === 'image/png'){
+        cb(null,true)
+    }else{
+        cb(null,false)
+    }
+}
+ const upload=multer({
     storage:storage,
+    fileFilter:fileFilter
 }).single('image');
-export const uploadFileMiddleware = util.promisify(uploadFile)

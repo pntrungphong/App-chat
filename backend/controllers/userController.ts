@@ -6,14 +6,16 @@ import * as jwt from "jsonwebtoken";
 import { get } from "config";
 export const register = async (req: any, res: any) => {
   const { email, name, password } = req.body;
+  console.log(req.file);
+  const { originalName: image } = req.file;
   const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   let user = await User.findOne({ email });
   if (user) return res.status(400).send("User is already exits");
-  user = new User({ email, name, password });
+  user = new User({ email, name, password, image });
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
-  await user.save();
+  // await user.save();
   res.status(200).send(`User ${user.name}  registered successfully`);
 };
 

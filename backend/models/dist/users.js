@@ -22,6 +22,10 @@ exports.UserSchema = new mongoose_1.Schema({
         required: true,
         minlength: 6,
         maxlength: 1024
+    },
+    image: {
+        type: String,
+        required: true
     }
 }, {
     timestamps: true

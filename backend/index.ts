@@ -7,6 +7,7 @@ import { get } from "config";
 import cors from "cors";
 import * as _ from "lodash";
 import * as jwt from "jsonwebtoken";
+import bodyParser from 'body-parser'
 import { Message } from "./models/message";
 const app = express();
 
@@ -15,13 +16,13 @@ app.use(cors());
 if (!get("jwtPrivateKey")) {
   process.exit(1);
 }
-
 mongoose
   .connect("mongodb://localhost/appchat")
   .then(() => console.log("Connected to MongoDB..."))
   .catch(() => console.error("Could not connect to MongoDB..."));
-
-app.use(express.json());
+app.use('/uploads', express.static('uploads'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use("/api", user);
 app.use("/api", chatroom);
 app.use("/api", file);

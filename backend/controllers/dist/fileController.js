@@ -37,31 +37,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.upload = void 0;
-var upload_1 = require("../middleware/upload");
 exports.upload = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var err_1;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, upload_1.uploadFileMiddleware(req, res)];
-            case 1:
-                _a.sent();
-                if (req.file == undefined) {
-                    return [2 /*return*/, res.status(400).send({ message: "Please upload a file!" })];
-                }
-                res.status(200).send({
-                    message: "Uploaded the file successfully: " + req.file.originalname
-                });
-                return [3 /*break*/, 3];
-            case 2:
-                err_1 = _a.sent();
-                next(err_1);
-                res.status(500).send({
-                    message: "Could not upload the file: " + req.file.originalname + ". " + err_1
-                });
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+        try {
+            if (req.file == undefined) {
+                return [2 /*return*/, res.status(400).send({ message: "Please upload a file!" })];
+            }
+            res.status(200).send({
+                message: "Uploaded the file successfully: " + req.file.originalname
+            });
         }
+        catch (err) {
+            next(err);
+            res.status(500).send({
+                message: "Could not upload the file: " + req.file.originalname + ". " + err
+            });
+        }
+        return [2 /*return*/];
     });
 }); };

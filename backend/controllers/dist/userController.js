@@ -43,11 +43,13 @@ var joi = require("@hapi/joi");
 var jwt = require("jsonwebtoken");
 var config_1 = require("config");
 exports.register = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, name, password, error, user, salt, _b;
+    var _a, email, name, password, image, error, user, salt, _b;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
                 _a = req.body, email = _a.email, name = _a.name, password = _a.password;
+                console.log(req.file);
+                image = req.file.originalName;
                 error = users_1.validateUser(req.body).error;
                 if (error)
                     return [2 /*return*/, res.status(400).send(error.details[0].message)];
@@ -56,7 +58,7 @@ exports.register = function (req, res) { return __awaiter(void 0, void 0, void 0
                 user = _c.sent();
                 if (user)
                     return [2 /*return*/, res.status(400).send("User is already exits")];
-                user = new users_1.User({ email: email, name: name, password: password });
+                user = new users_1.User({ email: email, name: name, password: password, image: image });
                 return [4 /*yield*/, bcrypt.genSalt(10)];
             case 2:
                 salt = _c.sent();
@@ -64,9 +66,7 @@ exports.register = function (req, res) { return __awaiter(void 0, void 0, void 0
                 return [4 /*yield*/, bcrypt.hash(user.password, salt)];
             case 3:
                 _b.password = _c.sent();
-                return [4 /*yield*/, user.save()];
-            case 4:
-                _c.sent();
+                // await user.save();
                 res.status(200).send("User " + user.name + "  registered successfully");
                 return [2 /*return*/];
         }
